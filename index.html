@@ -3,120 +3,230 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Studio V7 Auto</title>
+<title>Anime Studio V14 — Base Anime</title>
 <style>
-body{margin:0;font-family:Arial;background:#050712;color:#f8fafc;padding:16px}
-.card{background:#101827;border:1px solid #26344b;border-radius:16px;padding:14px;margin:14px 0}
-textarea{width:100%;min-height:110px;padding:12px;background:#050812;color:white;border:1px solid #334155;border-radius:10px;font-size:15px}
-select{width:100%;padding:12px;background:#050812;color:white;border:1px solid #334155;border-radius:10px;font-size:15px}
-button{padding:12px 14px;margin:6px 4px;border:0;border-radius:10px;background:#38bdf8;color:#031018;font-weight:bold}
-.red{background:#e63946;color:white}
-.out{white-space:pre-wrap;background:#050812;border:1px solid #334155;border-radius:12px;padding:12px;line-height:1.45}
-h1{margin-bottom:4px}.sub{color:#94a3b8;font-size:13px}
+:root{--bg:#050712;--card:#101827;--box:#050812;--line:#26344b;--txt:#f8fafc;--mut:#94a3b8;--red:#e63946;--cyan:#38d9f5;--gold:#f4c430}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#03050d,#0b1020);color:var(--txt);font-family:Arial,Helvetica,sans-serif;padding:16px}
+.wrap{max-width:980px;margin:auto}
+.card{background:rgba(16,24,39,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+textarea,select{width:100%;padding:12px;background:var(--box);color:#fff;border:1px solid #334155;border-radius:10px;font-size:15px}
+textarea{min-height:120px;resize:vertical}
+label{display:block;color:var(--mut);font-size:12px;text-transform:uppercase;margin:12px 0 6px}
+button{padding:12px 14px;margin:8px 5px 0 0;border:0;border-radius:10px;background:var(--cyan);color:#031018;font-weight:bold}
+.red{background:var(--red);color:#fff}.dark{background:#334155;color:#fff}.gold{background:var(--gold);color:#111}
+.out{white-space:pre-wrap;background:var(--box);border:1px solid #334155;border-radius:10px;padding:12px;margin-top:10px;line-height:1.45;max-height:580px;overflow:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+small{color:#94a3b8}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<h1>⚡ Anime Studio V7</h1>
-<div class="sub">Modo automático total — a ideia gera tema, cenário, personagens, mapa e prompts.</div>
+<div class="wrap">
+<h1>⚡ Anime Studio V14</h1>
+<small>Base da história → anime completo • sem forçar jogo/RPG • prompts EN</small>
 
 <div class="card">
-<h2>1) Ideia base</h2>
-<textarea id="ideia" placeholder="Ex: dois irmãos fogem pela ponte durante uma tempestade, mas um deles precisa escolher salvar o outro..."></textarea>
+<h2>1) Base da história</h2>
+<textarea id="base" placeholder="Ex: Vivendo uma vida normal, conheci algo estranho e fui levado para um novo mundo..."></textarea>
 
+<div class="grid">
+<div>
 <label>Número de cenas</label>
 <select id="cenas">
 <option value="3">3 cenas</option>
-<option value="4">4 cenas</option>
+<option value="4" selected>4 cenas</option>
 <option value="5">5 cenas</option>
-<option value="6" selected>6 cenas</option>
+<option value="6">6 cenas</option>
 <option value="8">8 cenas</option>
 <option value="10">10 cenas</option>
 <option value="12">12 cenas</option>
 </select>
-
-<button class="red" onclick="gerar()">⚡ Gerar automático</button>
-<button onclick="exemplo()">🎲 Exemplo dark</button>
+</div>
+<div>
+<label>Visualizar</label>
+<select id="modoCena">
+<option value="all">Todas as cenas</option>
+<option value="1">Somente cena 1</option>
+<option value="2">Somente cena 2</option>
+<option value="3">Somente cena 3</option>
+<option value="4">Somente cena 4</option>
+<option value="5">Somente cena 5</option>
+<option value="6">Somente cena 6</option>
+<option value="7">Somente cena 7</option>
+<option value="8">Somente cena 8</option>
+<option value="9">Somente cena 9</option>
+<option value="10">Somente cena 10</option>
+<option value="11">Somente cena 11</option>
+<option value="12">Somente cena 12</option>
+</select>
+</div>
 </div>
 
+<div class="grid">
+<div>
+<label>Tom principal</label>
+<select id="tom">
+<option>anime dramático psicológico</option>
+<option>anime dark emocional</option>
+<option>anime fantasia sombria</option>
+<option>anime mistério sobrenatural</option>
+<option>anime ação dramática</option>
+<option>anime romance sombrio</option>
+<option>anime ficção dramática</option>
+</select>
+</div>
+<div>
+<label>Ritmo</label>
+<select id="ritmo">
+<option>hook forte + progressão emocional</option>
+<option>lento e pesado</option>
+<option>rápido e viral</option>
+<option>cinematográfico equilibrado</option>
+</select>
+</div>
+</div>
+
+<button class="red" onclick="gerarTudo()">⚡ Gerar anime</button>
+<button class="gold" onclick="gerarCenaIndividual()">🎬 Gerar cena individual</button>
+<button class="dark" onclick="exemplo()">🎲 Exemplo</button>
+</div>
+
+<div class="card"><h2>📖 História anime gerada</h2><div id="historia" class="out"></div><button onclick="copiar('historia')">Copiar</button></div>
 <div class="card"><h2>🎭 Personagens</h2><div id="personagens" class="out"></div><button onclick="copiar('personagens')">Copiar</button></div>
-<div class="card"><h2>🧠 Leitura dramática</h2><div id="leitura" class="out"></div><button onclick="copiar('leitura')">Copiar</button></div>
-<div class="card"><h2>🧭 Mapa cinematográfico</h2><div id="mapa" class="out"></div><button onclick="copiar('mapa')">Copiar</button></div>
-<div class="card"><h2>🖼️ Prompt imagem</h2><div id="img" class="out"></div><button onclick="copiar('img')">Copiar</button><button onclick="abrir('https://leonardo.ai')">Leonardo</button><button onclick="abrir('https://pixai.art')">PixAI</button><button onclick="abrir('https://www.genspark.ai/pt/tools/ai-anime-generator')">Genspark</button></div>
-<div class="card"><h2>🎥 Prompt vídeo</h2><div id="vid" class="out"></div><button onclick="copiar('vid')">Copiar</button><button onclick="abrir('https://pixverse.ai')">Pixverse</button><button onclick="abrir('https://klingai.com')">Kling</button></div>
-<div class="card"><h2>🚫 Negative prompt</h2><div id="neg" class="out"></div><button onclick="copiar('neg')">Copiar</button></div>
+<div class="card"><h2>🌍 Mundo / cenário</h2><div id="mundo" class="out"></div><button onclick="copiar('mundo')">Copiar</button></div>
+<div class="card"><h2>🧭 Mapa das cenas</h2><div id="mapa" class="out"></div><button onclick="copiar('mapa')">Copiar</button></div>
+<div class="card"><h2>🖼️ Image Prompt EN</h2><div id="imgEN" class="out"></div><button onclick="copiar('imgEN')">Copy EN</button><button onclick="abrir('https://leonardo.ai')">Leonardo</button><button onclick="abrir('https://pixai.art')">PixAI</button></div>
+<div class="card"><h2>🎥 Video Prompt EN</h2><div id="vidEN" class="out"></div><button onclick="copiar('vidEN')">Copy EN</button><button onclick="abrir('https://pixverse.ai')">Pixverse</button><button onclick="abrir('https://klingai.com')">Kling</button></div>
+<div class="card"><h2>🚫 Negative Prompt</h2><div id="neg" class="out"></div><button onclick="copiar('neg')">Copy negative</button></div>
+</div>
 
 <script>
 function v(id){return document.getElementById(id).value.trim()}
 function s(id,t){document.getElementById(id).innerText=t}
 function copiar(id){navigator.clipboard.writeText(document.getElementById(id).innerText);alert("Copiado!")}
 function abrir(url){window.open(url,"_blank")}
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
-function has(txt,words){return words.some(w=>txt.includes(w))}
-
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function has(t,w){return w.some(x=>t.includes(x))}
 function exemplo(){
-document.getElementById("ideia").value="dois irmãos atravessam uma ponte de madeira durante uma tempestade, a ponte começa a ceder e o mais velho precisa decidir entre continuar fugindo ou salvar o mais novo";
-gerar();
+document.getElementById("base").value="Vivendo uma vida normal, conheci algo estranho em uma tela antiga e fui levado para um novo mundo. Quando acordo, ninguém me reconhece e o céu tem duas luas.";
+gerarTudo();
 }
 
-function gerar(){
-let raw=v("ideia");
-let ideia=raw.toLowerCase();
-let n=parseInt(v("cenas"));
+function corrigirBase(raw){
+let r=raw.trim();
+let trocas=[
+["um vida","uma vida"],["se conhecer","conheci"],["eu fui transferido","fui levado"],["persogem","personagem"],["persoganes","personagens"],["histutia","história"],["na tempestade","durante a tempestade"]
+];
+trocas.forEach(p=>{r=r.replaceAll(p[0],p[1])});
+if(r.length>0){r=r.charAt(0).toUpperCase()+r.slice(1)}
+if(!r.endsWith(".")&&!r.endsWith("!")&&!r.endsWith("?")) r+=".";
+return r;
+}
 
-if(!raw){alert("Digite uma ideia primeiro.");return;}
+function analisarBase(raw){
+let txt=raw.toLowerCase();
+let genero="anime dramático";
+let estrutura="vida comum quebrada por um evento impossível";
+let mundo="um mundo desconhecido com regras estranhas, céu incomum e atmosfera silenciosa";
+let conflito="entender onde está antes que algo perceba sua presença";
+let simbolo="uma luz impossível refletida nos olhos do protagonista";
+let hook="O protagonista percebe que a realidade mudou antes de entender o motivo.";
+let risco="o novo mundo parece calmo, mas reage à presença dele";
+let protagonista="jovem comum, olhar confuso, roupa simples do mundo real, expressão assustada tentando manter controle";
+let secundario="figura misteriosa do novo mundo, olhar silencioso, roupa incomum, parece saber mais do que fala";
+let relacao="desconhecidos ligados por um mistério";
 
-let relacao="conexão implícita";
-let emocao="tensão psicológica crescente";
-let tema="drama psicológico";
-let cenario="ambiente instável e escuro";
-let clima="vento frio e chuva leve";
-let energia="suspense emocional";
-let estilo="anime 2D cinematográfico dark, clean lineart, cel shading, alto contraste, chuva, sombras profundas";
+if(has(txt,["jogo","game","tela","sistema"])){
+ genero="anime isekai psicológico";
+ estrutura="vida normal quebrada por uma transferência inexplicável para outro mundo";
+ mundo="um novo mundo com aparência de fantasia, sinais de regras invisíveis e sensação de que tudo observa o protagonista";
+ conflito="sobreviver sem entender as regras desse mundo";
+ simbolo="uma tela apagada ou marca luminosa que só ele consegue ver";
+ hook="Ele acorda em outro mundo antes de saber se está vivo, dormindo ou preso.";
+}
+if(has(txt,["mundo novo","novo mundo","outro mundo","transferido","levado"])){
+ genero="anime isekai dramático";
+ mundo="um mundo estranho, vasto e silencioso, com céu diferente, ruínas distantes e sensação de destino quebrado";
+ conflito="aceitar que não há volta imediata";
+}
+if(has(txt,["irmão","irmãos","familia","família"])){
+ genero="anime drama familiar";
+ relacao="família separada pelo evento impossível";
+ conflito="encontrar a pessoa perdida antes que o novo mundo apague suas lembranças";
+}
+if(has(txt,["monstro","criatura","sombra"])){
+ genero="anime dark fantasy";
+ risco="uma presença perigosa se aproxima sem aparecer completamente";
+}
+if(has(txt,["cidade","rua","escola","casa"])){
+ mundo="um lugar comum distorcido, como se a realidade tivesse sido copiada errado";
+ simbolo="objetos familiares fora do lugar";
+}
+if(has(txt,["chuva","tempestade"])){
+ mundo+=" sob chuva intensa e luz fria";
+ simbolo="gotas de chuva subindo ao contrário";
+}
+if(has(txt,["barco","farol","porto","mar"])){
+ mundo="um porto escuro com farol distante, mar revolto e vento forte";
+ conflito="decidir entre segurar algo do antigo mundo ou aceitar a travessia";
+ simbolo="o farol iluminando algo que não deveria existir";
+}
+return {genero,estrutura,mundo,conflito,simbolo,hook,risco,protagonista,secundario,relacao}
+}
 
-if(has(ideia,["irmão","irmãos","irmao","irmaos"])){relacao="irmãos";emocao="proteção, medo e sacrifício";tema="drama familiar psicológico";}
-if(has(ideia,["perde","perda","luto","morre","morte"])){emocao="luto, vazio e culpa";tema="drama de perda";}
-if(has(ideia,["foge","fugindo","corre","correndo"])){energia="urgência e sobrevivência";}
-if(has(ideia,["ponte"])){cenario="ponte instável sobre água escura";}
-if(has(ideia,["estação","trem"])){cenario="estação abandonada molhada e vazia";}
-if(has(ideia,["cidade","rua"])){cenario="rua urbana molhada com luzes distantes";}
-if(has(ideia,["favela","telhado"])){cenario="favela vertical densa à noite";}
-if(has(ideia,["mar","praia","litoral","farol"])){cenario="litoral escuro com mar revolto";}
-if(has(ideia,["floresta","mata"])){cenario="floresta escura com neblina";}
-if(has(ideia,["chuva","tempestade","temporal"])){clima="tempestade intensa, chuva em camadas, vento forte";}
+function personagens(info){
+let nomes=["Kael","Rin","Nova","Aiko","Elias","Lyra","Mika","Zero","Noah","Yuna","Sora","Iris","Kira","Orion"];
+let p=pick(nomes), q=pick(nomes); if(q===p)q=pick(nomes);
+return {
+pt:"Principal: "+p+" — "+info.protagonista+"\\nSecundário: "+q+" — "+info.secundario+"\\nRelação: "+info.relacao+"\\nRegra: mesmos personagens, mesmo rosto, mesmas roupas, anime 2D, sem logos.",
+en:"Main character: "+p+" — "+info.protagonista+"\\nSecondary character: "+q+" — "+info.secundario+"\\nRelationship: "+info.relacao+"\\nRule: same characters, consistent character design, same face, same clothes, anime 2D, no logos."
+}
+}
 
-let nomes=["Kael","Nova","Rin","Aiko","Elias","Lyra","Mika","Zero","Rei","Hikari","Noah","Yuna","Sora","Ash","Luna"];
-let nomeP=pick(nomes), nomeS=pick(nomes); if(nomeS===nomeP) nomeS=pick(nomes);
+function fasesAnime(i){
+let fases=[
+["ruptura inicial","o mundo normal quebra em um detalhe impossível","o protagonista tenta negar o que viu","a realidade responde"],
+["despertar estranho","ele percebe que está em outro lugar","o corpo trava antes da mente entender","algo observa de longe"],
+["primeiro contato","uma figura ou sinal aparece","ninguém explica completamente","o protagonista entende que está vulnerável"],
+["ameaça revelada","o novo mundo mostra perigo real","ele precisa se mover ou será alcançado","a fuga começa"],
+["escolha emocional","voltar deixa de ser opção imediata","ele decide sobreviver primeiro","a antiga vida vira lembrança"],
+["gancho final","um símbolo conecta os dois mundos","ele percebe que foi escolhido ou marcado","a cena termina com mistério aberto"],
+["queda de confiança","o primeiro aliado parece esconder algo","a dúvida cresce","a relação fica instável"],
+["primeiro poder/sinal","algo dentro dele reage ao mundo","ele não controla o fenômeno","o ambiente muda ao redor"],
+["perda momentânea","algo importante desaparece","o medo vira objetivo","ele corre sem saber para onde"],
+["promessa silenciosa","ele escolhe não quebrar emocionalmente","o olhar muda","nasce a jornada"]
+];
+return fases[(i-1)%fases.length];
+}
 
-let principal="jovem protagonista, olhar intenso, cabelo molhado, roupa dark sem logos, postura emocionalmente controlada";
-let secundario="personagem vulnerável, olhar expressivo, corpo menor ou mais frágil, emoção clara";
-if(relacao==="irmãos"){principal="irmão mais velho protetor, olhar tenso, roupa urbana escura molhada";secundario="irmão mais novo assustado, expressão dependente, roupa simples molhada";}
-if(tema.includes("perda")){principal="protagonista emocionalmente quebrado, olhar vazio, cabelo bagunçado, roupa simples molhada";secundario="presença ligada à memória, expressão silenciosa, aura melancólica";}
+function render(raw,n,filtro){
+let base=corrigirBase(raw);
+let info=analisarBase(base);
+let chars=personagens(info);
+let tom=v("tom"), ritmo=v("ritmo");
+let historia="BASE CORRIGIDA:\\n"+base+"\\n\\n"+
+"HISTÓRIA GERADA:\\n"+info.hook+" A vida comum do protagonista é interrompida por "+info.estrutura+". Ele é lançado em "+info.mundo+". O conflito central não é apenas entender o lugar, mas enfrentar "+info.conflito+". A história deve parecer anime: emoções visíveis no olhar, silêncio pesado, ambiente reagindo e um mistério maior aparecendo aos poucos.\\n\\n"+
+"GÊNERO: "+info.genero+"\\nTOM: "+tom+"\\nRITMO: "+ritmo+"\\nRISCO: "+info.risco+"\\nSÍMBOLO VISUAL: "+info.simbolo;
 
-let personagens="Principal: "+nomeP+" — "+principal+"\n\nSecundário: "+nomeS+" — "+secundario+"\n\nRelação: "+relacao+"\nEstado emocional: "+emocao+"\nRegra: same characters, consistent character design, same face, same clothes, anime 2D, no logo, no brand text.";
+let mundo="MUNDO / CENÁRIO:\\n"+info.mundo+"\\n\\nREGRAS DRAMÁTICAS:\\n- O mundo não explica tudo de início.\\n- O protagonista precisa reagir antes de entender.\\n- Cada cena deve revelar uma nova tensão.\\n- O símbolo visual deve voltar em cenas importantes.\\n\\nSÍMBOLO: "+info.simbolo;
 
-let leitura="TEMA GERADO: "+tema+"\nCENÁRIO GERADO: "+cenario+" com "+clima+"\nENERGIA: "+energia+"\nESTILO: "+estilo+"\nDURAÇÃO: "+(n*4)+" segundos ("+n+" cenas de 4s)";
-
-let fases=["entrada no perigo","primeiro sinal de ameaça","instabilidade física","quebra emocional","olhar de entendimento","tentativa desesperada","decisão irreversível","ato de proteção ou sacrifício","consequência silenciosa","close poético no vazio","último gesto emocional","final em suspensão"];
-let cams=["tracking baixo em movimento","push-in no rosto","dutch angle leve","close nas mãos","zoom nos olhos","câmera tremida controlada","slow motion curto","pull-back dramático","plano aberto com profundidade","focus shift para detalhe simbólico","orbit suave","frame quase congelado"];
-let mapa="MAPA CINEMATOGRÁFICO — "+n+" CENAS / "+(n*4)+"s\nCada cena = 4 segundos\n\n";
+let mapa="MAPA ANIME — "+n+" CENAS / "+(n*4)+"s\\nCada cena = 4 segundos\\n\\n";
+let img="", vid="";
 for(let i=1;i<=n;i++){
-let idx=(i-1)%fases.length;
-mapa+="CENA "+i+" (4s)\n";
-mapa+="AÇÃO: "+fases[idx]+" dentro da história: "+raw+".\n";
-mapa+="CÂMERA: "+cams[idx]+", movimento contínuo, sem pose parada.\n";
-mapa+="EMOÇÃO: "+emocao+".\n";
-mapa+="AMBIENTE: "+cenario+"; "+clima+"; luz e vento reagindo.\n\n";
+ if(filtro!=="all" && filtro!==String(i)) continue;
+ let f=fasesAnime(i);
+ mapa+="CENA "+i+" (4s)\\nAÇÃO: "+f[0]+" — "+f[1]+".\\nDECISÃO/REAÇÃO: "+f[2]+".\\nRESULTADO: "+f[3]+".\\nCENÁRIO: "+info.mundo+".\\nSÍMBOLO: "+info.simbolo+".\\n\\n";
+
+ img+="SCENE "+i+" — IMAGE PROMPT EN\\nCinematic anime, ultra detailed, best quality, anime 2D, clean lineart, cel shading, high contrast lighting. "+chars.en+"\\nScene: "+f[0]+", "+f[1]+". Location: "+info.mundo+". Visual symbol: "+info.simbolo+". Clear faces, visible hands, strong body language, emotional tension, cinematic depth, no text, no logos, 16:9.\\n\\n";
+
+ vid+="SCENE "+i+" — VIDEO PROMPT EN\\nCinematic anime video, 4 seconds. Action: "+f[0]+" within the story: "+base+". Reaction: "+f[2]+". Result: "+f[3]+". Camera: dynamic push-in, focus on face and hands, subtle handheld motion. Continuous movement, no static pose, clothes and hair reacting naturally, clear emotion, maintain same characters and outfits.\\n\\n";
+}
+s("historia",historia);s("personagens",chars.pt+"\\n\\n--- EN ---\\n"+chars.en);s("mundo",mundo);s("mapa",mapa);s("imgEN",img);s("vidEN",vid);s("neg","photorealistic, real human, 3d render, blurry, low quality, bad anatomy, bad hands, extra fingers, distorted face, static pose, no movement, dark faces, hidden faces, logo, text, watermark, western cartoon");
 }
 
-let img="anime cinematic, ultra detailed, best quality, sharp focus, high contrast lighting, "+estilo+"\n\n"+personagens+"\n\nSCENE:\n"+raw+"\n\nGenerated mood: "+tema+", "+emocao+".\nLocation: "+cenario+" with "+clima+".\n\nCOMPOSITION:\ncharacters dominant in frame, faces clear, hands visible, strong body language, emotional tension, cinematic depth.\n\nLIGHTING:\ncold blue shadows mixed with warm practical lights, rim light, readable faces.\n\nSTYLE:\nanime 2D, clean lineart, cel shading, expressive faces, cinematic composition, 16:9.";
-
-let vid="anime cinematic video, "+estilo+"\n\nSTORY:\n"+raw+"\n\nCHARACTERS:\n"+personagens+"\n\nTIMELINE:\n"+n+" scenes, each scene 4 seconds. Continuous psychological and emotional progression.\n\nCAMERA:\ndynamic but controlled motion, push-in, tilt, focus shift from environment to faces and hands.\n\nMOVEMENT:\ncontinuous motion, rain and wind affecting clothes and hair, no static pose, strong body language.\n\nIMPORTANT:\nclear action, clear emotion, readable faces, no random scene change.";
-
-let neg="photorealistic, real human, 3d render, blurry, low quality, bad anatomy, bad hands, extra fingers, distorted face, static pose, no movement, dark faces, hidden faces, logo, text, watermark, western cartoon";
-
-s("personagens",personagens);s("leitura",leitura);s("mapa",mapa);s("img",img);s("vid",vid);s("neg",neg);
-}
+function gerarTudo(){let raw=v("base");if(!raw){alert("Escreva a base da história.");return}render(raw,parseInt(v("cenas")),v("modoCena"))}
+function gerarCenaIndividual(){let raw=v("base");if(!raw){alert("Escreva a base da história.");return}let total=parseInt(v("cenas"));let cena=prompt("Qual cena? 1 até "+total);if(!cena||parseInt(cena)<1||parseInt(cena)>total){alert("Cena inválida.");return}document.getElementById("modoCena").value=String(parseInt(cena));render(raw,total,String(parseInt(cena)))}
 </script>
 </body>
 </html>
