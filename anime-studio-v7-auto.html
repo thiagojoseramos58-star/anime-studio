@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Studio V7 Auto</title>
+<style>
+body{margin:0;font-family:Arial;background:#050712;color:#f8fafc;padding:16px}
+.card{background:#101827;border:1px solid #26344b;border-radius:16px;padding:14px;margin:14px 0}
+textarea{width:100%;min-height:110px;padding:12px;background:#050812;color:white;border:1px solid #334155;border-radius:10px;font-size:15px}
+select{width:100%;padding:12px;background:#050812;color:white;border:1px solid #334155;border-radius:10px;font-size:15px}
+button{padding:12px 14px;margin:6px 4px;border:0;border-radius:10px;background:#38bdf8;color:#031018;font-weight:bold}
+.red{background:#e63946;color:white}
+.out{white-space:pre-wrap;background:#050812;border:1px solid #334155;border-radius:12px;padding:12px;line-height:1.45}
+h1{margin-bottom:4px}.sub{color:#94a3b8;font-size:13px}
+</style>
+</head>
+<body>
+
+<h1>⚡ Anime Studio V7</h1>
+<div class="sub">Modo automático total — a ideia gera tema, cenário, personagens, mapa e prompts.</div>
+
+<div class="card">
+<h2>1) Ideia base</h2>
+<textarea id="ideia" placeholder="Ex: dois irmãos fogem pela ponte durante uma tempestade, mas um deles precisa escolher salvar o outro..."></textarea>
+
+<label>Número de cenas</label>
+<select id="cenas">
+<option value="3">3 cenas</option>
+<option value="4">4 cenas</option>
+<option value="5">5 cenas</option>
+<option value="6" selected>6 cenas</option>
+<option value="8">8 cenas</option>
+<option value="10">10 cenas</option>
+<option value="12">12 cenas</option>
+</select>
+
+<button class="red" onclick="gerar()">⚡ Gerar automático</button>
+<button onclick="exemplo()">🎲 Exemplo dark</button>
+</div>
+
+<div class="card"><h2>🎭 Personagens</h2><div id="personagens" class="out"></div><button onclick="copiar('personagens')">Copiar</button></div>
+<div class="card"><h2>🧠 Leitura dramática</h2><div id="leitura" class="out"></div><button onclick="copiar('leitura')">Copiar</button></div>
+<div class="card"><h2>🧭 Mapa cinematográfico</h2><div id="mapa" class="out"></div><button onclick="copiar('mapa')">Copiar</button></div>
+<div class="card"><h2>🖼️ Prompt imagem</h2><div id="img" class="out"></div><button onclick="copiar('img')">Copiar</button><button onclick="abrir('https://leonardo.ai')">Leonardo</button><button onclick="abrir('https://pixai.art')">PixAI</button><button onclick="abrir('https://www.genspark.ai/pt/tools/ai-anime-generator')">Genspark</button></div>
+<div class="card"><h2>🎥 Prompt vídeo</h2><div id="vid" class="out"></div><button onclick="copiar('vid')">Copiar</button><button onclick="abrir('https://pixverse.ai')">Pixverse</button><button onclick="abrir('https://klingai.com')">Kling</button></div>
+<div class="card"><h2>🚫 Negative prompt</h2><div id="neg" class="out"></div><button onclick="copiar('neg')">Copiar</button></div>
+
+<script>
+function v(id){return document.getElementById(id).value.trim()}
+function s(id,t){document.getElementById(id).innerText=t}
+function copiar(id){navigator.clipboard.writeText(document.getElementById(id).innerText);alert("Copiado!")}
+function abrir(url){window.open(url,"_blank")}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function has(txt,words){return words.some(w=>txt.includes(w))}
+
+function exemplo(){
+document.getElementById("ideia").value="dois irmãos atravessam uma ponte de madeira durante uma tempestade, a ponte começa a ceder e o mais velho precisa decidir entre continuar fugindo ou salvar o mais novo";
+gerar();
+}
+
+function gerar(){
+let raw=v("ideia");
+let ideia=raw.toLowerCase();
+let n=parseInt(v("cenas"));
+
+if(!raw){alert("Digite uma ideia primeiro.");return;}
+
+let relacao="conexão implícita";
+let emocao="tensão psicológica crescente";
+let tema="drama psicológico";
+let cenario="ambiente instável e escuro";
+let clima="vento frio e chuva leve";
+let energia="suspense emocional";
+let estilo="anime 2D cinematográfico dark, clean lineart, cel shading, alto contraste, chuva, sombras profundas";
+
+if(has(ideia,["irmão","irmãos","irmao","irmaos"])){relacao="irmãos";emocao="proteção, medo e sacrifício";tema="drama familiar psicológico";}
+if(has(ideia,["perde","perda","luto","morre","morte"])){emocao="luto, vazio e culpa";tema="drama de perda";}
+if(has(ideia,["foge","fugindo","corre","correndo"])){energia="urgência e sobrevivência";}
+if(has(ideia,["ponte"])){cenario="ponte instável sobre água escura";}
+if(has(ideia,["estação","trem"])){cenario="estação abandonada molhada e vazia";}
+if(has(ideia,["cidade","rua"])){cenario="rua urbana molhada com luzes distantes";}
+if(has(ideia,["favela","telhado"])){cenario="favela vertical densa à noite";}
+if(has(ideia,["mar","praia","litoral","farol"])){cenario="litoral escuro com mar revolto";}
+if(has(ideia,["floresta","mata"])){cenario="floresta escura com neblina";}
+if(has(ideia,["chuva","tempestade","temporal"])){clima="tempestade intensa, chuva em camadas, vento forte";}
+
+let nomes=["Kael","Nova","Rin","Aiko","Elias","Lyra","Mika","Zero","Rei","Hikari","Noah","Yuna","Sora","Ash","Luna"];
+let nomeP=pick(nomes), nomeS=pick(nomes); if(nomeS===nomeP) nomeS=pick(nomes);
+
+let principal="jovem protagonista, olhar intenso, cabelo molhado, roupa dark sem logos, postura emocionalmente controlada";
+let secundario="personagem vulnerável, olhar expressivo, corpo menor ou mais frágil, emoção clara";
+if(relacao==="irmãos"){principal="irmão mais velho protetor, olhar tenso, roupa urbana escura molhada";secundario="irmão mais novo assustado, expressão dependente, roupa simples molhada";}
+if(tema.includes("perda")){principal="protagonista emocionalmente quebrado, olhar vazio, cabelo bagunçado, roupa simples molhada";secundario="presença ligada à memória, expressão silenciosa, aura melancólica";}
+
+let personagens="Principal: "+nomeP+" — "+principal+"\n\nSecundário: "+nomeS+" — "+secundario+"\n\nRelação: "+relacao+"\nEstado emocional: "+emocao+"\nRegra: same characters, consistent character design, same face, same clothes, anime 2D, no logo, no brand text.";
+
+let leitura="TEMA GERADO: "+tema+"\nCENÁRIO GERADO: "+cenario+" com "+clima+"\nENERGIA: "+energia+"\nESTILO: "+estilo+"\nDURAÇÃO: "+(n*4)+" segundos ("+n+" cenas de 4s)";
+
+let fases=["entrada no perigo","primeiro sinal de ameaça","instabilidade física","quebra emocional","olhar de entendimento","tentativa desesperada","decisão irreversível","ato de proteção ou sacrifício","consequência silenciosa","close poético no vazio","último gesto emocional","final em suspensão"];
+let cams=["tracking baixo em movimento","push-in no rosto","dutch angle leve","close nas mãos","zoom nos olhos","câmera tremida controlada","slow motion curto","pull-back dramático","plano aberto com profundidade","focus shift para detalhe simbólico","orbit suave","frame quase congelado"];
+let mapa="MAPA CINEMATOGRÁFICO — "+n+" CENAS / "+(n*4)+"s\nCada cena = 4 segundos\n\n";
+for(let i=1;i<=n;i++){
+let idx=(i-1)%fases.length;
+mapa+="CENA "+i+" (4s)\n";
+mapa+="AÇÃO: "+fases[idx]+" dentro da história: "+raw+".\n";
+mapa+="CÂMERA: "+cams[idx]+", movimento contínuo, sem pose parada.\n";
+mapa+="EMOÇÃO: "+emocao+".\n";
+mapa+="AMBIENTE: "+cenario+"; "+clima+"; luz e vento reagindo.\n\n";
+}
+
+let img="anime cinematic, ultra detailed, best quality, sharp focus, high contrast lighting, "+estilo+"\n\n"+personagens+"\n\nSCENE:\n"+raw+"\n\nGenerated mood: "+tema+", "+emocao+".\nLocation: "+cenario+" with "+clima+".\n\nCOMPOSITION:\ncharacters dominant in frame, faces clear, hands visible, strong body language, emotional tension, cinematic depth.\n\nLIGHTING:\ncold blue shadows mixed with warm practical lights, rim light, readable faces.\n\nSTYLE:\nanime 2D, clean lineart, cel shading, expressive faces, cinematic composition, 16:9.";
+
+let vid="anime cinematic video, "+estilo+"\n\nSTORY:\n"+raw+"\n\nCHARACTERS:\n"+personagens+"\n\nTIMELINE:\n"+n+" scenes, each scene 4 seconds. Continuous psychological and emotional progression.\n\nCAMERA:\ndynamic but controlled motion, push-in, tilt, focus shift from environment to faces and hands.\n\nMOVEMENT:\ncontinuous motion, rain and wind affecting clothes and hair, no static pose, strong body language.\n\nIMPORTANT:\nclear action, clear emotion, readable faces, no random scene change.";
+
+let neg="photorealistic, real human, 3d render, blurry, low quality, bad anatomy, bad hands, extra fingers, distorted face, static pose, no movement, dark faces, hidden faces, logo, text, watermark, western cartoon";
+
+s("personagens",personagens);s("leitura",leitura);s("mapa",mapa);s("img",img);s("vid",vid);s("neg",neg);
+}
+</script>
+</body>
+</html>
